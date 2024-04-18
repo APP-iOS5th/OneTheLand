@@ -151,7 +151,7 @@ struct ContentView: View {
             }
             HStack { // 버튼 네번째 줄(. 0, C, +) 들어갈 스택
                 Button(action: {
-                    if inputStorage != "" {
+                    if inputStorage != "" && inputStorage.last != "." {
                         inputStorage += "."
                     }
                 }) {
@@ -200,11 +200,11 @@ struct ContentView: View {
     
     
     func CalculateAll() -> String {
-        // 숫자와 연산자로 나눠 계산하는 함수(일단 정수 연산자 정수 만)
+        // 숫자와 연산자로 나눠 계산하는 함수
         let numbers = inputStorage.split(separator: " ").map(String.init)
-        var num1 = Int(numbers[0])
+        var num1 = Double(numbers[0])
         var operaters = numbers[1]
-        var num2 = Int(numbers[2])
+        var num2 = Double(numbers[2])
         
         if operaters == "+" {
             return String(num1! + num2!)
