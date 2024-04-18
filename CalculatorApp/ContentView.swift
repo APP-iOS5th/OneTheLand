@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var text: String = "3"
+    @State private var text: String = "0"
+    let buttons = [
+        ["7","8","9","/"],
+        ["4","5","6","*"],
+        ["1","2","3","-"],
+        [".","0","C","+"],
+    ]
     var body: some View {
         VStack(){
             //입력부분 생성
@@ -21,33 +27,16 @@ struct ContentView: View {
             
             //키패드 생성
             Grid(horizontalSpacing: 10, verticalSpacing: 10) {
-                GridRow {
-                    KeypadBtn(pad: "7", text: $text)
-                    KeypadBtn(pad: "8", text: $text)
-                    KeypadBtn(pad: "9", text: $text)
-                    KeypadBtn(pad: "/", text: $text)
-                }//: GRIDROW
-                GridRow {
-                    KeypadBtn(pad: "4", text: $text)
-                    KeypadBtn(pad: "5", text: $text)
-                    KeypadBtn(pad: "6", text: $text)
-                    KeypadBtn(pad: "*", text: $text)
-                }//: GRIDROW
-                GridRow {
-                    KeypadBtn(pad: "1", text: $text)
-                    KeypadBtn(pad: "2", text: $text)
-                    KeypadBtn(pad: "3", text: $text)
-                    KeypadBtn(pad: "-", text: $text)
-                }//: GRIDROW
-                GridRow {
-                    KeypadBtn(pad: ".", text: $text)
-                    KeypadBtn(pad: "0", text: $text)
-                    KeypadBtn(pad: "C", text: $text)
-                    KeypadBtn(pad: "+", text: $text)
-                }//: GRIDROW
+                ForEach(buttons, id: \.self){ row in
+                    GridRow {
+                        ForEach(row, id: \.self){ col in
+                            KeypadBtn(pad: col, text: $text)
+                        }//: LOOP
+                    }//: GRIDROW
+                }//: LOOP
                 KeypadBtn(pad: "=", text: $text)
             }//: GRID
-            .padding(.vertical, 10)
+            .padding(10)
             .background(.white)
         }//: VSTACK
         .background(.gray.opacity(0.3))
@@ -62,10 +51,21 @@ struct KeypadBtn: View {
         Button(action: {
             switch pad{
             case "=":
-                calculate()
+                calculate1()
             case "C":
-                text = ""
+                text = "0"
+            case "+","-","*","/":
+                if text == "0"{
+                    text = ""
+                }
+                if (["+","-","*","/"]).contains(text.suffix(1)){
+                    text.removeLast()
+                }
+                text += pad
             default:
+                if text == "0"{
+                    text = ""
+                }
                 text += pad
             }
         }, label: {
@@ -74,14 +74,74 @@ struct KeypadBtn: View {
                 .overlay {
                     Text(pad)
                         .font(.title2)
-                        .foregroundStyle(.black)
-                        .frame(width: .infinity, height: .infinity)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(pad == "C" ? .red : .black)
                 }
         })
     }
     
     func calculate(){
+        let operators: [Character] = ["+","-","*","/"]
+        if operators.contains(text.suffix(1)){
+            text = "Invalid Input"
+            return
+        }
         
+        var numbers = [Double]()
+        var currentNumber = ""
+        var currentOperator = "+"
+        
+        for char in text{
+            print(char)
+            if operators.contains(char){
+                if let number = Double(currentNumber){
+                    switch currentOperator{
+                    case "+":
+                        numbers.append(number)
+                    case "-":
+                        numbers.append(-number)
+                    case "*":
+                        numbers[numbers.count - 1] *= number
+                    case "/":
+                        numbers[numbers.count - 1] /= number
+                    default:
+                        break
+                    }
+                    currentNumber = ""
+                    currentOperator = String(char)
+                }
+                
+            }else{
+                currentNumber += String(char)
+            }
+        }
+        
+        if !currentNumber.isEmpty{
+            if let number = Double(currentNumber){
+                switch currentOperator{
+                case "+":
+                    numbers.append(number)
+                case "-":
+                    numbers.append(-number)
+                case "*":
+                    numbers[numbers.count - 1] *= number
+                case "/":
+                    numbers[numbers.count - 1] /= number
+                default:
+                    break
+                }
+            }
+        }
+        text = String(numbers.reduce(0, +))
+    }
+    
+    func calculate1(){
+        let expression = NSExpression(format: text)
+        if let value = expression.expressionValue(with: nil, context: nil) as? Double{
+            text = String(value)
+        }else{
+            text = "Invalid input"
+        }
     }
 }
 
