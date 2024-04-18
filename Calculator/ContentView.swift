@@ -2,7 +2,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var resultCouter: Double = 0
+    @State private var resultCouter: String = "0"
+    @State private var prevValue: String = ""
+    @State private var currentValue: String = ""
     
     let calculatorInputArray: [String] = ["7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "-", ".", "0", "C", "+"]
     
@@ -15,7 +17,7 @@ struct ContentView: View {
                 HStack{
                     Spacer()
                     
-                    Text(resultCouter == 0 ? "0" : "\(resultCouter)")
+                    Text(resultCouter)
                         .padding(.trailing, 20)
                         .font(.largeTitle)
                     
@@ -28,11 +30,12 @@ struct ContentView: View {
                 // 계산기 입력 창
                 VStack(spacing: 20)  {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 20) {
-                        ForEach(calculatorInputArray, id: \.self) {idx in
+                        ForEach(calculatorInputArray, id: \.self) {key in
                             Button {
-                                print("Hello")
+                                handleInput(key)
+                                
                             } label: {
-                                Text("\(idx)")
+                                Text("\(key)")
                             }
                             .frame(width: geometry.size.width / 4 - 20, height: geometry.size.height / 7)
                             .border(Color.black)
@@ -40,9 +43,9 @@ struct ContentView: View {
                             .font(.title)
                         }
                     }
-                  
+                    
                     Button {
-                        print("Yap")
+                        
                     } label: {
                         Text("=")
                     }
@@ -53,11 +56,32 @@ struct ContentView: View {
                     
                 }
                 .padding(0)
-                
-                
             }
         }
     }
+    func handleInput(_ input: String) {
+        prevValue += input
+        
+        switch input {
+        case ".":
+            let point = prevValue
+            prevValue = point
+            resultCouter = prevValue
+            
+        case "+":
+            currentValue += input
+            resultCouter = currentValue
+            
+        case "C":
+            prevValue = ""
+            resultCouter = "0"
+            currentValue = "0"
+            
+        default:
+            resultCouter = prevValue
+        }
+    }
+   
 }
 
 #Preview {
