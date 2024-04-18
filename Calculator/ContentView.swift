@@ -64,7 +64,7 @@ struct ContentView: View {
                 .buttonStyle(MyButtonStyle())
 
                 Button(action: {
-                    if inputStorage != "0" {
+                    if inputStorage.last != "0" && inputStorage.last != " " {
                         inputStorage += " / "
                     }
                 }) {
@@ -105,7 +105,9 @@ struct ContentView: View {
                 .buttonStyle(MyButtonStyle())
 
                 Button(action: {
-                    inputStorage += " * "
+                    if inputStorage.last != " " {
+                        inputStorage += " * "
+                    }
                 }) {
                     Text("*")
                 }
@@ -143,7 +145,9 @@ struct ContentView: View {
                 .buttonStyle(MyButtonStyle())
 
                 Button(action: {
-                    inputStorage += " - "
+                    if inputStorage.last != " " {
+                        inputStorage += " - "
+                    }
                 }) {
                     Text("-")
                 }
@@ -177,7 +181,9 @@ struct ContentView: View {
                 .foregroundColor(.red)
 
                 Button(action: {
-                    inputStorage += " + "
+                    if inputStorage.last != " "{
+                        inputStorage += " + "
+                    }
                 }) {
                     Text("+")
                 }
