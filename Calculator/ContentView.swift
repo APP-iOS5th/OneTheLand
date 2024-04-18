@@ -1,21 +1,17 @@
-//
-//  ContentView.swift
-//  Calculator
-//
-//  Created by SeongKook on 4/18/24.
-//
 
 import SwiftUI
 
 struct ContentView: View {
+    @State private var resultCout = 0
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            VStack {
+                HStack {
+                    TextField("계산기 입력.", text: $resultCout)
+                }
+            }
         }
-        .padding()
     }
 }
 

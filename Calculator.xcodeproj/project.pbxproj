@@ -51,6 +51,7 @@
 		A67978BD2BD0D4B900E3F095 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				A67978CC2BD0D6D300E3F095 /* Style */,
 				A67978BE2BD0D4B900E3F095 /* CalculatorApp.swift */,
 				A67978C02BD0D4B900E3F095 /* ContentView.swift */,
 				A67978C22BD0D4BE00E3F095 /* Assets.xcassets */,
@@ -65,6 +66,13 @@
 				A67978C52BD0D4BE00E3F095 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A67978CC2BD0D6D300E3F095 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Style;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
