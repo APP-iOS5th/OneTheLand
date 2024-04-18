@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-enum Operators {
-    case plus
-    case minus
-    case multiply
-    case divide
-}
-
 struct MyButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -36,6 +29,7 @@ struct ContentView: View {
                 Text(inputStorage)
                     .font(.largeTitle)
                     .multilineTextAlignment(.trailing)
+                    
             }
 
             HStack { // 버튼 첫번째 줄(7, 8, 9, /) 들어갈 스택
@@ -191,29 +185,42 @@ struct ContentView: View {
             }
             // 마지막 버튼(=)
             Button {
-                // if inputStorage.last
-                // CalculteAll()
+                if inputStorage.last != "/" || inputStorage.last != "*" || inputStorage.last != "-" || inputStorage.last != "+" {
+                    inputStorage = CalculateAll()
+                }
             } label: {
                 Text("=")
             }
             .frame(width: 360, height: 120)
             .border(Color.gray)
-            .foregroundColor(.black
-            )
+            .foregroundColor(.black)
         }
         .padding()
     }
     
-//    func StringModifier() {
-//        // 문자열 숫자/연산자로 분류하는 함수
-//        // 1. = 버튼이 눌렸을 때 실행됨
-//        // 2. inputStorage의 마지막
-//    }
-//    
-//    func CalculateAll() {
-//        // 계산하는 함수
-//        // 1. 문자열을 분류해온다.
-//    }
+    
+    func CalculateAll() -> String {
+        // 숫자와 연산자로 나눠 계산하는 함수(일단 정수 연산자 정수 만)
+        let numbers = inputStorage.split(separator: " ").map(String.init)
+        var num1 = Int(numbers[0])
+        var operaters = numbers[1]
+        var num2 = Int(numbers[2])
+        
+        if operaters == "+" {
+            return String(num1! + num2!)
+        }
+        else if operaters == "-" {
+            return String(num1! - num2!)
+        }
+        else if operaters == "*" {
+            return String(num1! * num2!)
+        }
+        else if operaters == "/" {
+            return String(num1! / num2!)
+        }
+        
+        return "Retry"
+    }
 }
 
 #Preview {
