@@ -60,15 +60,18 @@ struct ContentView: View {
         }
     }
     func handleInput(_ input: String) {
-        prevValue += input
+        
         
         switch input {
         case ".":
+            prevValue += input
             let point = prevValue
             prevValue = point
             resultCouter = prevValue
             
         case "+":
+            prevValue += input
+            resultCouter = "+"
             currentValue += input
             resultCouter = currentValue
             
@@ -78,6 +81,7 @@ struct ContentView: View {
             currentValue = "0"
             
         default:
+            prevValue += input
             resultCouter = prevValue
         }
     }
