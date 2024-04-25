@@ -8,13 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
+    var tasks: [Task]
+    
     var body: some View {
-        VStack {
-
+        NavigationStack {
+            List {
+                ForEach(tasks) { task in
+                    HStack {
+                        Image(systemName: "circle")
+                        Text(task.description)
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle("To Do List")
+//            .toolbar {
+//                Button("Add") {
+//                    //addItemToRow()
+//                }
+//            }
+            
         }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(tasks: Task.tasks)
 }
