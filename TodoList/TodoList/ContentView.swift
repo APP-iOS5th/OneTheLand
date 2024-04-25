@@ -8,15 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
-    var tasks: [Task]
+    @State var tasks: [Task]
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(tasks) { task in
+                ForEach(tasks.indices, id: \.self) { index in
+                    let task = tasks[index]
                     HStack {
-                        Image(systemName: "circle")
+                        Button(action: {
+                            // check!
+                            withAnimation {
+                                tasks[index].completed.toggle()
+                            }
+                        }) {
+                            if task.completed {
+                                Image(systemName: "checkmark.circle.fill")
+                            } else {
+                                Image(systemName: "circle")
+                            }
+                        }
                         Text(task.description)
+                            .font(.title3)
                     }
                 }
                 .padding()
